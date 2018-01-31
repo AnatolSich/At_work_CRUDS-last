@@ -18,13 +18,13 @@ public class BmwDao {
         String name = "";
         try {
             PreparedStatement preparedStatement = connection
-                    .prepareStatement("SELECT name_BMW_model" +
-                            "FROM spr_BMW_models" +
-                            "WHERE id_BMV_model=?");
+                    .prepareStatement("SELECT name_BMW_model " +
+                            "FROM spr_BMW_models " +
+                            "WHERE id_BMV_model = ?");
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()){
-                name=resultSet.getString(1);
+            while (resultSet.next()) {
+                name = resultSet.getString(1);
             }
         } catch (SQLException e) {
             e.printStackTrace();
