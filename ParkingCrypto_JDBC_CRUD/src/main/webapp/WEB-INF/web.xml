@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+    <servlet>
+        <servlet-name>CarController</servlet-name>
+        <servlet-class>controller.CarController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CarController</servlet-name>
+        <url-pattern>/CarCommit</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>OwnerController</servlet-name>
+        <servlet-class>controller.OwnerController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>OwnerController</servlet-name>
+        <url-pattern>/OwnerCommit</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>ParkingCardController</servlet-name>
+        <servlet-class>controller.ParkingCardController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ParkingCardController</servlet-name>
+        <url-pattern>/ParkingCardCommit</url-pattern>
+    </servlet-mapping>
+</web-app>
