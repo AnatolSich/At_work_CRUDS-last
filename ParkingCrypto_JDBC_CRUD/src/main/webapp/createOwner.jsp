@@ -13,8 +13,7 @@
 </head>
 <body>
 <h1>Create Owner</h1>
-<form action="/OwnerCommit" method="post">
-    ID <input type="text" value="Auto filled" readonly>
+<form action="/OwnerCommit?action=CREATE" method="post">
     Name <input type="text" name="name">
     <input type="submit" value="Submit">
 </form>

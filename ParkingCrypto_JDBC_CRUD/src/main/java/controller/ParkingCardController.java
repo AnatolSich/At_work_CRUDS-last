@@ -3,7 +3,7 @@ package controller;
 import dao.OwnerDB;
 import dao.ParkingCardDB;
 import model.ParkingCard;
-import service.CalculationsDB;
+import dao.CalculationsDB;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -17,11 +17,12 @@ import java.util.Date;
 
 import static service.Constants.DATE_PATTERN;
 import static util.Operations.*;
+import static controller.ControllerToDaoConnector.ownerDB;
+import static controller.ControllerToDaoConnector.carDB;
+import static controller.ControllerToDaoConnector.parkingCardDB;
+import static controller.ControllerToDaoConnector.calculationsDB;
 
 public class ParkingCardController extends HttpServlet {
-    private ParkingCardDB parkingCardDB;
-    private OwnerDB ownerDB;
-    private CalculationsDB calculationsDB;
 
     private static String CREATE_PARKING_CARD = "/createParkingCard.jsp";
     private static String EDIT_PARKING_CARD = "/editParkingCard.jsp";
@@ -30,18 +31,13 @@ public class ParkingCardController extends HttpServlet {
     private static String LIST_PARKING_CARDS_BY_OWNER = "/listParkingCardsByOwner.jsp";
 
 
-    public ParkingCardController() {
-        this.parkingCardDB = new ParkingCardDB();
-        this.ownerDB = new OwnerDB();
-        this.calculationsDB = new CalculationsDB();
-    }
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String actionValue = req.getParameter("action");
         String view = "";
 
         if (CREATE.name().equalsIgnoreCase(actionValue)) {
+            req.setAttribute("carNumber", req.getParameter("carNumber"));
             view = CREATE_PARKING_CARD;
         } else if (EDIT.name().equalsIgnoreCase(actionValue)) {
             int id = Integer.parseInt(req.getParameter("id"));
@@ -74,8 +70,27 @@ public class ParkingCardController extends HttpServlet {
             } else {
                 calculationsDB.calculateByCardId(Integer.parseInt(parkingCardId));
             }
-            req.setAttribute("parkingCards", parkingCardDB.getAllparkingCards());
-            view = LIST_PARKING_CARDS;
+            String list = req.getParameter("list");
+            if (list == null || list.isEmpty() || "CARDS".equalsIgnoreCase(list)) {
+                req.setAttribute("parkingCards", parkingCardDB.getAllparkingCards());
+                view = LIST_PARKING_CARDS;
+            } else if ("CARDS_BY_OWNER".equalsIgnoreCase(list)) {
+                int ownerId = Integer.parseInt(req.getParameter("ownerId"));
+                req.setAttribute("parkingCards", parkingCardDB.getParkingCardsByOwnerId(ownerId));
+                req.setAttribute("owner", ownerDB.getOwnerById(ownerId));
+                req.setAttribute("fullPayCheck", parkingCardDB.getFullPayCheckByOwnerId(ownerId));
+                view = LIST_PARKING_CARDS_BY_OWNER;
+            } else if ("CARDS_BY_CAR".equalsIgnoreCase(list)) {
+                String carNumber = req.getParameter("carNumber");
+                req.setAttribute("carNumber", carNumber);
+                req.setAttribute("parkingCards", parkingCardDB.getParkingCardsByCarNumber(carNumber));
+                req.setAttribute("fullPayCheck", parkingCardDB.getFullPayCheckByCarNumber(carNumber));
+                view = LIST_PARKING_CARDS_BY_CAR;
+            } else {
+                throw new RuntimeException("Invalid \"list\"-param of request");
+            }
+
+
         } else {
             throw new RuntimeException("Invalid parkingCardController request");
         }
@@ -87,7 +102,8 @@ public class ParkingCardController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ParkingCard parkingCard = new ParkingCard();
-        parkingCard.setCarNumber(req.getParameter("carNumber"));
+        String carNumber = req.getParameter("carNumber");
+        parkingCard.setCarNumber(carNumber);
         Date start = null;
         try {
             start = new SimpleDateFormat(DATE_PATTERN).parse(req.getParameter("start"));
@@ -112,6 +128,7 @@ public class ParkingCardController extends HttpServlet {
         if (period != null & !period.isEmpty()) {
             parkingCard.setPeriod(Integer.valueOf(period));
         }
+
         String payCheck = req.getParameter("payCheck");
         if (payCheck != null & !payCheck.isEmpty()) {
             parkingCard.setPayCheck(Double.parseDouble(payCheck));
@@ -124,9 +141,12 @@ public class ParkingCardController extends HttpServlet {
             parkingCard.setId(Integer.parseInt(id));
             parkingCardDB.editParkingCard(parkingCard);
         }
-        req.setAttribute("parkingCards", parkingCardDB.getAllparkingCards());
+
+        req.setAttribute("carNumber", carNumber);
+        req.setAttribute("parkingCards", parkingCardDB.getParkingCardsByCarNumber(carNumber));
+        req.setAttribute("fullPayCheck", parkingCardDB.getFullPayCheckByCarNumber(carNumber));
         req.setAttribute("datePattern", DATE_PATTERN);
-        RequestDispatcher dispatcher = req.getRequestDispatcher(LIST_PARKING_CARDS);
+        RequestDispatcher dispatcher = req.getRequestDispatcher(LIST_PARKING_CARDS_BY_CAR);
         dispatcher.forward(req, resp);
     }
 }

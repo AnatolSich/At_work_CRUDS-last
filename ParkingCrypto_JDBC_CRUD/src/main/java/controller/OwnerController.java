@@ -1,8 +1,8 @@
 package controller;
 
-import dao.OwnerDB;
 import model.Owner;
 import util.Operations;
+import static controller.ControllerToDaoConnector.ownerDB;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -14,15 +14,13 @@ import java.io.IOException;
 import static util.Operations.*;
 
 public class OwnerController extends HttpServlet {
-    private OwnerDB ownerDB;
 
     private static final String CREATE_OWNER = "/createOwner.jsp";
     private static final String EDIT_OWNER = "/editOwner.jsp";
     private static final String LIST_OWNERS = "/listOwners.jsp";
+    private static final String OWNER = "/owner.jsp";
 
-    public OwnerController() {
-        this.ownerDB = new OwnerDB();
-    }
+
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -42,7 +40,14 @@ public class OwnerController extends HttpServlet {
         } else if (LIST.name().equalsIgnoreCase(actionValue)) {
             req.setAttribute("owners", ownerDB.getAllOwners());
             view = LIST_OWNERS;
-        } else {
+        }
+        else if (Operations.OWNER.name().equalsIgnoreCase(actionValue)) {
+            int ownerId = Integer.parseInt(req.getParameter("ownerId"));
+            req.setAttribute("owner",ownerDB.getOwnerById(ownerId));
+            view = OWNER;
+        }
+
+        else {
             throw new RuntimeException("Invalid ownerController request");
         }
         RequestDispatcher dispatcher = req.getRequestDispatcher(view);
@@ -54,11 +59,12 @@ public class OwnerController extends HttpServlet {
         Owner owner = new Owner();
         owner.setName(req.getParameter("name"));
 
-        String id = req.getParameter("id");
-        if (id == null || id.isEmpty()) {
+        String actionValue = req.getParameter("action");
+        if (CREATE.name().equalsIgnoreCase(actionValue)) {
             ownerDB.addOwner(owner);
-        } else {
-            owner.setId(Integer.parseInt(id.trim()));
+        } else if (EDIT.name().equalsIgnoreCase(actionValue)) {
+            String ownerId = req.getParameter("ownerId");
+            owner.setId(Integer.parseInt(ownerId));
             ownerDB.editOwner(owner);
         }
         req.setAttribute("owners", ownerDB.getAllOwners());

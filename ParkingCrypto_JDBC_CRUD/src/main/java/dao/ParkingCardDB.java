@@ -22,7 +22,7 @@ public class ParkingCardDB {
         List<ParkingCard> list = new ArrayList<>();
         try {
             PreparedStatement preparedStatement = connection
-                    .prepareStatement("SELECT * FROM parking_cards ORDER BY id");
+                    .prepareStatement("SELECT * FROM parking_cards ORDER BY start");
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 ParkingCard parkingCard = new ParkingCard(resultSet.getInt(1), resultSet.getString(2),
@@ -43,7 +43,7 @@ public class ParkingCardDB {
                     .prepareStatement("SELECT " +
                             "parking_cards.id, parking_cards.car_number, parking_cards.start, " +
                             "parking_cards.finish, parking_cards.period, parking_cards.payCheck  " +
-                            "FROM parking_cards WHERE car_number=? ORDER BY id");
+                            "FROM parking_cards WHERE car_number=? ORDER BY start");
             preparedStatement.setString(1, carNumber);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -104,7 +104,7 @@ public class ParkingCardDB {
                             "FROM  parking_cards, (SELECT cars.car_number, owners.name  " +
                             "FROM cars INNER JOIN owners ON cars.owner_id = owners.id " +
                             "WHERE owners.id=?) AS TAB  " +
-                            "WHERE parking_cards.car_number=TAB.car_number ORDER BY parking_cards.id");
+                            "WHERE parking_cards.car_number=TAB.car_number ORDER BY parking_cards.start");
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {

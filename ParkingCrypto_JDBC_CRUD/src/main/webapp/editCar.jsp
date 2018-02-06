@@ -14,8 +14,9 @@
 <body>
 <h1>Edit Car</h1>
 <form action="/CarCommit?creation=${oldCarNumber}" method="post">
+    <input hidden readonly name="ownerId" value="<c:out value="${owner.id}"/>">
     Car Number <input type="text" name="carNumber" value="<c:out value="${car.carNumber}"/>">
-    OwnerID <input type="text" name="ownerId" value="<c:out value="${car.ownerId}"/>">
+    Owner <input readonly type="text" name="ownerName" value="<c:out value="${owner.name}"/>">
     <input type="submit" value="Submit">
 </form>
 <br>

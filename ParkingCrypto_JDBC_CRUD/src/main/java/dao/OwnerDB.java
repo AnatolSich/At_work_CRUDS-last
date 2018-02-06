@@ -50,6 +50,21 @@ public class OwnerDB {
         }
         return owner;
     }
+    public String getOwnerNameById(int id) {
+        String name="";
+        try {
+            PreparedStatement preparedStatement = connection
+                    .prepareStatement("SELECT name FROM owners WHERE id=?");
+            preparedStatement.setInt(1,id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while ((resultSet.next())) {
+                name=resultSet.getString(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return name;
+    }
 
     public void addOwner(Owner owner){
         try {

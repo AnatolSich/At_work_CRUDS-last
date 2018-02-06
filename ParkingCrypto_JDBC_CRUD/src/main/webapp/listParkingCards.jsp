@@ -16,7 +16,6 @@
 <h1>List of All Parking Cards</h1>
 <table border="1">
     <tr>
-        <th>ID</th>
         <th>CarNumber</th>
         <th>Start</th>
         <th>Finish</th>
@@ -26,26 +25,21 @@
     </tr>
     <c:forEach var="tempParkingCard" items="${parkingCards}">
         <tr>
-            <td><c:out value="${tempParkingCard.id}"/></td>
-            <td><c:out value="${tempParkingCard.carNumber}"/></td>
+            <td><a href="/CarCommit?action=CAR&carNumber=<c:out value="${tempParkingCard.carNumber}"></c:out>"><c:out value="${tempParkingCard.carNumber}"/></a></td>
             <td><fmt:formatDate pattern="${datePattern}" value="${tempParkingCard.start}"/></td>
             <td><fmt:formatDate pattern="${datePattern}" value="${tempParkingCard.finish}"/></td>
             <td><c:out value="${tempParkingCard.period}"/></td>
             <td><c:out value="${tempParkingCard.payCheck}"/></td>
             <td><a href="/ParkingCardCommit?action=EDIT&id=<c:out value="${tempParkingCard.id}"/>">Edit</a></td>
             <td> <a href="/ParkingCardCommit?action=DELETE&id=<c:out value="${tempParkingCard.id}"/>">Delete</a> </td>
-            <td> <a href="/ParkingCardCommit?action=CALCULATE&parkingCardId=<c:out value="${tempParkingCard.id}"/>">Calculate</a> </td>
+            <td> <a href="/ParkingCardCommit?action=CALCULATE&list=CARDS&parkingCardId=<c:out value="${tempParkingCard.id}"/>">Calculate</a> </td>
         </tr>
     </c:forEach>
 </table>
 <br>
 <br>
 <br>
-<a href="/ParkingCardCommit?action=CREATE"> Create parking card</a>
-<br>
-<br>
-<br>
-<a href="/ParkingCardCommit?action=CALCULATE">Calculate all payChecks</a>
+<a href="/ParkingCardCommit?action=CALCULATE&list=CARDS">Calculate all payChecks</a>
 <br>
 <br>
 <br>

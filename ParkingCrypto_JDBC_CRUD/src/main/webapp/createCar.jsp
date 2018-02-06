@@ -13,8 +13,9 @@
 <body>
 <h1>Create Car</h1>
 <form action="/CarCommit?creation=new" method="post">
+    <input hidden readonly type="text" name="ownerId" value="${owner.id}">
     Car Number <input type="text" name="carNumber">
-    OwnerID <input type="text" name="ownerId">
+    Owner <input  readonly type="text" namKvantume="ownerName" value="${owner.name}">
     <input type="submit" value="Submit">
 </form>
 <br>

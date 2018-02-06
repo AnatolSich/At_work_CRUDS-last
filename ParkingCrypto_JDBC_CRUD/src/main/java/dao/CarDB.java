@@ -1,6 +1,7 @@
 package dao;
 
 import model.Car;
+import model.Owner;
 import util.ConnectDB;
 
 import java.sql.Connection;

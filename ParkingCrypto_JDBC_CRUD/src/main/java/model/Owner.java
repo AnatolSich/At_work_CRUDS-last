@@ -1,8 +1,8 @@
 package model;
 
 public class Owner {
-    int id;
-    String name;
+   private int id;
+   private String name;
 
     public Owner(int id, String name) {
         this.id = id;

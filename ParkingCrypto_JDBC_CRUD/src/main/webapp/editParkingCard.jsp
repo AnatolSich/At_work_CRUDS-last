@@ -15,7 +15,7 @@
 <body>
 <h1>Edit Parking Card</h1>
 <form method="post" action="/ParkingCardCommit">
-    ID <input type="text" readonly name="id" value="<c:out value="${parkingCard.id}"/>">
+    <input hidden type="text" readonly name="id" value="<c:out value="${parkingCard.id}"/>">
     CarNumber <input type="text" name="carNumber" value="<c:out value="${parkingCard.carNumber}"/>"><br>
     Start <input type="date" name="start" value="<fmt:formatDate pattern="${datePattern}" value="${parkingCard.start}"/>">
     <c:choose>

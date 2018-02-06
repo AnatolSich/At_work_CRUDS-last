@@ -15,11 +15,11 @@
 <body>
 <h1>Create Parking Card</h1>
 <form method="post" action="/ParkingCardCommit">
-    ID <input type="text" readonly name="id" value="Auto">
-    CarNumber <input type="text" name="carNumber">
+    <input hidden type="text" readonly name="id" value="Auto">
+    CarNumber <input readonly type="text" name="carNumber" value="${carNumber}"><br>
     Start <input type="date" name="start" value="${datePattern}">
     Finish <input type="date" name="finish" value="${datePattern}">
-    Period <input type="text" name="period">
+    Period <input type="text" name="period"><br>
     PayCheck <input type="text" name="payCheck">
     <input type="submit" value="Submit">
 </form>

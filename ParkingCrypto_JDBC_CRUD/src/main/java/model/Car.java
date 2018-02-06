@@ -2,8 +2,8 @@ package model;
 
 public class Car {
 
-    String carNumber;
-    int ownerId;
+    private String carNumber;
+    private int ownerId;
 
     public Car(String carNumber, int ownerId) {
         this.carNumber = carNumber;

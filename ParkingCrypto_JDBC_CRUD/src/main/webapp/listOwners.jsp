@@ -15,14 +15,12 @@
 <h1>List of Owners</h1>
 <table border="1">
     <tr>
-        <th> id</th>
         <th> Name</th>
         <th colspan="4"> Operation</th>
     </tr>
     <c:forEach var="tempOwner" items="${owners}">
         <tr>
-            <td><c:out value="${tempOwner.id}"></c:out></td>
-            <td><c:out value="${tempOwner.name}"></c:out></td>
+            <td><a href="/OwnerCommit?action=OWNER&ownerId=<c:out value="${tempOwner.id}"></c:out>"><c:out value="${tempOwner.name}"/></a></td>
             <td><a href="/OwnerCommit?action=EDIT&id=<c:out value="${tempOwner.id}"></c:out>">Edit</a></td>
             <td><a href="/OwnerCommit?action=DELETE&id=<c:out value="${tempOwner.id}"></c:out>">Delete</a></td>
             <td><a href="/CarCommit?action=LIST_CARS_BY_OWNER_ID&ownerId=<c:out value="${tempOwner.id}"></c:out>">List Cars</a></td>
@@ -30,7 +28,7 @@
         </tr>
     </c:forEach>
 </table>
-<a href="/OwnerCommit?action=CREATE">Create</a>
+<a href="/OwnerCommit?action=CREATE">Create new owner</a>
 <br>
 <br>
 <br>

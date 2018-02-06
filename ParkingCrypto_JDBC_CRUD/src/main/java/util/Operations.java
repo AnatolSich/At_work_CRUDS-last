@@ -8,5 +8,7 @@ public enum Operations {
     CREATE,
     EDIT,
     DELETE,
-    CALCULATE
+    CALCULATE,
+    OWNER,
+    CAR
 }

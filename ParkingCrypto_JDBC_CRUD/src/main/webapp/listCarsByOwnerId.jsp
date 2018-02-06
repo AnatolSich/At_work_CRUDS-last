@@ -16,22 +16,23 @@
 <table border="1">
     <tr>
         <th>Car number</th>
-        <th>Owner ID</th>
-        <th colspan="2">Operations</th>
+        <th>Owner</th>
+        <th colspan="3">Operations</th>
     </tr>
 
     <c:forEach var="tempCar" items="${cars}">
         <tr>
-            <td><c:out value="${tempCar.carNumber}"></c:out></td>
-            <td><c:out value="${tempCar.ownerId}"></c:out></td>
-            <td><a href="/CarCommit?action=EDIT&carNumber=<c:out value="${tempCar.carNumber}"></c:out>">Edit</a></td>
-            <td><a href="/CarCommit?action=DELETE&carNumber=<c:out value="${tempCar.carNumber}"></c:out>">Delete</a></td>
+            <td><a href="/CarCommit?action=CAR&carNumber=<c:out value="${tempCar.carNumber}"></c:out>"><c:out value="${tempCar.carNumber}"/></a></td>
+            <td><a href="/OwnerCommit?action=OWNER&ownerId=<c:out value="${ownerId}"></c:out>"><c:out value="${ownerName}"/></a></td>
+            <td><a href="/CarCommit?action=EDIT&carNumber=<c:out value="${tempCar.carNumber}"></c:out>&ownerId=${ownerId}">Edit</a></td>
+            <td><a href="/CarCommit?action=DELETE&carNumber=<c:out value="${tempCar.carNumber}"></c:out>&list=CARS_BY_OWNER&ownerId=${ownerId}">Delete</a></td>
+            <td><a href="/ParkingCardCommit?action=LIST_PARKING_CARDS_BY_CAR_NUMBER&carNumber=<c:out value="${tempCar.carNumber}"></c:out>">ParkingCards</a></td>
         </tr>
     </c:forEach>
 
 
 </table>
-<a href="/CarCommit?action=CREATE">Create</a>
+<a href="/CarCommit?action=CREATE&ownerId=${ownerId}">Create new car</a>
 <br>
 <br>
 <br>

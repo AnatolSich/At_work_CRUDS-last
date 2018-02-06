@@ -3,12 +3,12 @@ package model;
 import java.util.Date;
 
 public class ParkingCard {
-    int id;
-    String carNumber;
-    Date start;
-    Date finish;
-    int period;
-    double payCheck;
+    private int id;
+    private String carNumber;
+    private Date start;
+    private Date finish;
+    private int period;
+    private double payCheck;
 
     public ParkingCard(int id, String carNumber, Date start, Date finish, int period, double payCheck) {
         this.id = id;
