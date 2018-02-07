@@ -13,7 +13,7 @@ import java.security.cert.CertificateException;
 class DesEncrypter {
     Cipher ecipher;
     Cipher dcipher;
-
+    private static String pathKeystore = "D:\\Work\\Workspace\\CRUDs-last\\ParkingCrypto_JDBC_CRUD\\src\\main\\java\\crypto\\Cryptor.java\\keystore";
     /**
      * Конструктор
      *
@@ -57,6 +57,8 @@ class DesEncrypter {
      * Функция для проверки правильности работы класса
      */
     public static void main(String[] s) throws IllegalBlockSizeException, BadPaddingException, IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, CertificateException, KeyStoreException, UnrecoverableEntryException {
+
+
         SecretKey key = null;
         key = KeyGenerator.getInstance("DES").generateKey();
         DesEncrypter encrypter = new DesEncrypter(key);
@@ -77,6 +79,7 @@ class DesEncrypter {
         try (InputStream keyStoreData = new FileInputStream("keystore.ks")) {
             keyStore.load(keyStoreData, keyStorePassword);
         }
+
         keyStore3.load(null, keyStorePassword);
 
         //получение secretKey из объекта keyStore по паролю к Entry - keyPassword, по имени alias - "keyAlias", и по паролю к  alias - entryPassword

@@ -1,8 +1,14 @@
 package dao;
 
+import crypto.Cryptor;
+import crypto.KeyStoreInit;
 import model.Owner;
 import util.ConnectDB;
 
+import javax.crypto.NoSuchPaddingException;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,20 +18,35 @@ import java.util.List;
 
 public class OwnerDB {
     private Connection connection;
+    private Cryptor cryptor;
 
     public OwnerDB() {
         this.connection = ConnectDB.getConnection();
+        try {
+            this.cryptor = new Cryptor(KeyStoreInit.getSecretKey());
+        } catch (NoSuchPaddingException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        }
     }
 
     public List<Owner> getAllOwners() {
         List<Owner> list = new ArrayList<>();
-
         try {
             PreparedStatement preparedStatement = connection
                     .prepareStatement("SELECT * FROM owners ORDER BY id");
             ResultSet resultSet = preparedStatement.executeQuery();
             while ((resultSet.next())) {
-                Owner owner = new Owner(resultSet.getInt(1), resultSet.getString(2));
+
+                Owner owner = null;
+                try {
+                    owner = new Owner(resultSet.getInt(1), cryptor.decryptor(resultSet.getString(2)));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
                 list.add(owner);
             }
         } catch (SQLException e) {
@@ -70,7 +91,8 @@ public class OwnerDB {
         try {
             PreparedStatement preparedStatement = connection
                     .prepareStatement("INSERT INTO owners (name) VALUES (?)");
-            preparedStatement.setString(1,owner.getName());
+            String name = cryptor.encryptor(owner.getName());
+            preparedStatement.setString(1,name);
             preparedStatement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
