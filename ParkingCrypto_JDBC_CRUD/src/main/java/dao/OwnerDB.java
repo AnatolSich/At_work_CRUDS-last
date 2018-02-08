@@ -64,7 +64,11 @@ public class OwnerDB {
             ResultSet resultSet = preparedStatement.executeQuery();
             while ((resultSet.next())) {
                owner.setId(resultSet.getInt(1));
-               owner.setName(resultSet.getString(2));
+                try {
+                    owner.setName(cryptor.decryptor(resultSet.getString(2)));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -79,7 +83,11 @@ public class OwnerDB {
             preparedStatement.setInt(1,id);
             ResultSet resultSet = preparedStatement.executeQuery();
             while ((resultSet.next())) {
-                name=resultSet.getString(1);
+                try {
+                    name=cryptor.decryptor(resultSet.getString(1));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -103,7 +111,7 @@ public class OwnerDB {
         try {
             PreparedStatement preparedStatement = connection
                     .prepareStatement("UPDATE owners SET name=? WHERE id=?");
-            preparedStatement.setString(1,owner.getName());
+            preparedStatement.setString(1,cryptor.encryptor(owner.getName()));
             preparedStatement.setInt(2,owner.getId());
             preparedStatement.execute();
         } catch (SQLException e) {

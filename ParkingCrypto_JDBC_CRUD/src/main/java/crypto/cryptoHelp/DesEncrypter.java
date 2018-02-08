@@ -1,4 +1,4 @@
-package crypto;
+package crypto.cryptoHelp;
 
 import javax.crypto.*;
 import java.io.*;

@@ -5,10 +5,14 @@ import util.ConnectDB;
 
 import java.sql.*;
 import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static service.Constants.DATE_PATTERN;
 //import java.util.Date;
 
 public class ParkingCardDB {
@@ -141,6 +145,7 @@ public class ParkingCardDB {
         try {
             PreparedStatement preparedStatement = connection
                     .prepareStatement("INSERT INTO parking_cards (car_number, start, finish, period, paycheck) VALUES (?,?,?,?,?)");
+
             preparedStatement.setString(1, parkingCard.getCarNumber());
             preparedStatement.setDate(2, new Date(parkingCard.getStart().getTime()));
             java.util.Date finish = parkingCard.getFinish();

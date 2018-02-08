@@ -1,4 +1,4 @@
-package crypto;
+package crypto.cryptoHelp;
 
 public interface Cryptographical {
     String encrypt(String plaintext);

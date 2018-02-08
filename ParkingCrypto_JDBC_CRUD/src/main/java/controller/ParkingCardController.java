@@ -104,25 +104,27 @@ public class ParkingCardController extends HttpServlet {
         ParkingCard parkingCard = new ParkingCard();
         String carNumber = req.getParameter("carNumber");
         parkingCard.setCarNumber(carNumber);
+        String startStr = req.getParameter("start");
         Date start = null;
         try {
-            start = new SimpleDateFormat(DATE_PATTERN).parse(req.getParameter("start"));
+            start = new SimpleDateFormat(DATE_PATTERN).parse(startStr);
         } catch (ParseException e) {
             e.printStackTrace();
         }
         parkingCard.setStart(start);
 
         String finishStr = req.getParameter("finish");
-        if (finishStr != null & !finishStr.isEmpty() & !finishStr.equalsIgnoreCase(DATE_PATTERN)) {
+        if (finishStr != null & !finishStr.isEmpty() & !finishStr.equalsIgnoreCase(DATE_PATTERN) & !finishStr.equalsIgnoreCase("дд.мм.рррр")) {
             Date finish = null;
             try {
                 finish = new SimpleDateFormat(DATE_PATTERN).parse(finishStr);
             } catch (ParseException e) {
                 e.printStackTrace();
+                }
+
+                parkingCard.setFinish(finish);
             }
 
-            parkingCard.setFinish(finish);
-        }
 
         String period = req.getParameter("period");
         if (period != null & !period.isEmpty()) {
@@ -149,4 +151,5 @@ public class ParkingCardController extends HttpServlet {
         RequestDispatcher dispatcher = req.getRequestDispatcher(LIST_PARKING_CARDS_BY_CAR);
         dispatcher.forward(req, resp);
     }
+
 }
